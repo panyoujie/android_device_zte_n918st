@@ -11,7 +11,7 @@
 #       the names of its contributors may be used to endorse or promote
 #       products derived from this software without specific prior written
 #       permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -25,7 +25,8 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import init.qcom.usb.rc
+#import init.qcom.usb.rc
+import init.nubia.usb.rc
 import init.target.rc
 
 on early-init
@@ -60,7 +61,6 @@ on early-boot
     write /sys/kernel/boot_adsp/boot 1
 
 on boot
-    chown system system /sys/class/leds/torch-light/brightness
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
@@ -127,6 +127,9 @@ on boot
     setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
     setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
+
+#   Set bt test prop to 0 whitch does not need persist prop 
+    setprop persist.service.btcmd 0
 
 #   Assign TCP buffer thresholds to be ceiling value of technology maximums
 #   Increased technology maximums should be reflected here.
@@ -763,7 +766,6 @@ service hcidump /system/bin/sh /system/etc/hcidump.sh
 
 service charger /charger
     class charger
-    group log
 
 service ssr_diag /system/bin/ssr_diag
     class late_start
@@ -782,8 +784,6 @@ service fastmmisrv /system/bin/sh /init.qcom.factory.sh
     oneshot
 
 on ffbm
-    write /sys/class/android_usb/android0/iSerial "0123456789"
-    setprop persist.sys.usb.config diag,serial_smd,rmnet_bam,adb
     start fastmmisrv
 
 service hvdcp /system/bin/hvdcp
@@ -847,9 +847,50 @@ service vm_bms /system/bin/vm_bms
     group root
     disabled
 
-service SensorCali /system/bin/SensorCali
-    user root 
+#on property:persist.service.ftmdaemon=1
+#    start ftmd
+#on property:persist.service.ftmdaemon=0
+#    stop ftmd
+
+# Addde by Song LinHua 2014.08.28 begin
+#   means of  the value of resstart_level:
+# 	  SYSTEM  : restart system
+#       RELATED: restart the related subsystem only
+on property:persist.sys.ssr.restart_level=1
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level "SYSTEM"
+on property:persist.sys.ssr.restart_level=3
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level "RELATED"
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level "RELATED"
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level "RELATED"
+
+# enable the modem ssr before modem bring up.
+# it is used to avoid system crash when 4G simcard switch
+on property:gsm.modem.restart_level=1
+	write /sys/bus/msm_subsys/devices/subsys2/restart_level "SYSTEM"
+	
+on property:gsm.modem.restart_level=3
+	write /sys/bus/msm_subsys/devices/subsys2/restart_level "RELATED"
+
+#ril reset modem add by zhanghao
+on property:gsm.modem.restart=1
+  write /sys/kernel/debug/msm_subsys/modem "restart"
+
+#   means of  value of download_mode
+#      0:  restart the system normally
+#      1:  restart the system to download mode for dump
+on property:persist.sys.ap.restart_level=0
+    write /sys/module/msm_poweroff/parameters/download_mode 0
+on property:persist.sys.ap.restart_level=1
+    write /sys/module/msm_poweroff/parameters/download_mode 1
+# Addde by Song LinHua 2014.08.28 end
+
+#used for entering factory test mode through dm
+service factory_code_set /system/bin/factory_code_exec
+    class main
+    disabled
     oneshot
-    disabled 
-    on property:ril.sensor_read="right"
-    start SensorCali
+
+on property:sys.set.factory.code=*
+	start factory_code_set

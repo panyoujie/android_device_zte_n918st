@@ -5,8 +5,6 @@
 /dev/tty                  0666   root       root
 /dev/random               0666   root       root
 /dev/urandom              0666   root       root
-# Make HW RNG readable by group system to let EntropyMixer read it.
-/dev/hw_random            0660   system     system
 /dev/ashmem               0666   root       root
 /dev/binder               0666   root       root
 
@@ -17,9 +15,6 @@
 # the msm hw3d client device node is world writable/readable
 /dev/msm_hw3dc            0666   root       root
 
-# the DIAG device node is not world writable/readable.
-/dev/diag                 0660   system     qcom_diag
-
 # gpu driver for adreno200 is globally accessible
 /dev/kgsl                 0666   root       root
 
@@ -27,6 +22,7 @@
 /dev/dri/*                0666   root       graphics
 
 # these should not be world writable
+/dev/diag                 0660   radio      radio
 /dev/diag_arm9            0660   radio      radio
 /dev/android_adb          0660   adb        adb
 /dev/android_adb_enable   0660   adb        adb
@@ -47,7 +43,7 @@
 /dev/adsp/*               0660   system     audio
 /dev/snd/*                0660   system     audio
 /dev/mt9t013              0660   system     system
-/dev/msm_camera/*         0660   system     camera
+/dev/msm_camera/*         0660   system     system
 /dev/akm8976_daemon       0640   compass    system
 /dev/akm8976_aot          0640   compass    system
 /dev/akm8973_daemon       0640   compass    system
@@ -85,6 +81,9 @@
 /dev/ts0710mux*           0640   radio      radio
 /dev/ppp                  0660   radio      vpn
 
+mkdir /data/nfc 660 nfc nfc
+mkdir /data/nfc/param 660 nfc nfc
+/dev/bcm2079x 0660 nfc nfc
 # sysfs properties
 /sys/devices/virtual/input/input*   enable      0660  root   input
 /sys/devices/virtual/input/input*   poll_delay  0660  root   input

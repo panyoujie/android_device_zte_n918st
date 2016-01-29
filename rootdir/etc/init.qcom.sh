@@ -188,3 +188,5 @@ case "$target" in
         start_vm_bms
         ;;
 esac
+
+start ftmd

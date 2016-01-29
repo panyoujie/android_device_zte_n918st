@@ -27,6 +27,26 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
+# Update USB serial number from persist storage if present, if not update
+# with value passed from kernel command line, if none of these values are
+# set then use the default value. This order is needed as for devices which
+# do not have unique serial number.
+# User needs to set unique usb serial number to persist.usb.serialno
+#
+serialno=`getprop persist.usb.serialno`
+case "$serialno" in
+    "")
+    serialnum=`getprop ro.serialno`
+    case "$serialnum" in
+        "");; #Do nothing, use default serial number
+        *)
+        echo "$serialnum" > /sys/class/android_usb/android0/iSerial
+    esac
+    ;;
+    *)
+    echo "$serialno" > /sys/class/android_usb/android0/iSerial
+esac
+
 chown -h root.system /sys/devices/platform/msm_hsusb/gadget/wakeup
 chmod -h 220 /sys/devices/platform/msm_hsusb/gadget/wakeup
 
@@ -62,77 +82,63 @@ case "$usbcurrentlimit" in
 esac
 
 #
+# ZTEMT: Allow USB enumeration with or without debug port
+#
+if [ -f "/persist/property/persist.sys.usb.factory" ];then
+	cat /persist/property/persist.sys.usb.factory | while read myline
+	do
+		case $myline in
+			0)
+				setprop persist.sys.usb.factory 0
+			;;
+			*)
+				setprop persist.sys.usb.factory 1
+			;;
+		esac
+		echo "LINE:"$myline
+	done
+else
+	setprop persist.sys.usb.factory 1
+fi
+
+#
 # Check ESOC for external MDM
 #
 # Note: currently only a single MDM is supported
 #
-if [ -d /sys/bus/esoc/devices ]; then
-for f in /sys/bus/esoc/devices/*; do
-    if [ -d $f ]; then
-        esoc_name=`cat $f/esoc_name`
-        if [ "$esoc_name" = "MDM9x25" -o "$esoc_name" = "MDM9x35" ]; then
-            esoc_link=`cat $f/esoc_link`
-            break
-        fi
-    fi
-done
-fi
 
-#target=`getprop ro.product.device`
-#target=${target:0:7}
+
+target=`getprop ro.product.device`
+target=${target:0:7}
 
 #
 # Allow USB enumeration with default PID/VID
 #
 baseband=`getprop ro.baseband`
-echo 1  > /sys/class/android_usb/f_mass_storage/lun/nofua
+echo 1 > /sys/class/android_usb/f_mass_storage/lun/nofua
+echo 1 > /sys/class/android_usb/f_mass_storage/disk/nofua
 usb_config=`getprop persist.sys.usb.config`
+build_type=`getprop ro.build.type`
+
 case "$usb_config" in
-    "" | "adb") #USB persist config not set, select default configuration
-      case "$esoc_link" in
-          "HSIC")
-              setprop persist.sys.usb.config diag,diag_mdm,serial_hsic,serial_tty,rmnet_hsic,mass_storage,adb
-              setprop persist.rmnet.mux enabled
-          ;;
-          "HSIC+PCIe")
-              setprop persist.sys.usb.config diag,diag_mdm,serial_hsic,rmnet_qti_ether,mass_storage,adb
-          ;;
-          "PCIe")
-              setprop persist.sys.usb.config diag,diag_mdm,serial_tty,rmnet_qti_ether,mass_storage,adb
-          ;;
-          *)
-          case "$baseband" in
-              "mdm")
-                   setprop persist.sys.usb.config diag,diag_mdm,serial_hsic,serial_tty,rmnet_hsic,mass_storage,adb
-              ;;
-              "mdm2")
-                   setprop persist.sys.usb.config diag,diag_mdm,serial_hsic,serial_tty,rmnet_hsic,mass_storage,adb
-              ;;
-              "sglte")
-                   setprop persist.sys.usb.config diag,diag_qsc,serial_smd,serial_tty,serial_hsuart,rmnet_hsuart,mass_storage,adb
-              ;;
-              "dsda" | "sglte2")
-                   setprop persist.sys.usb.config diag,diag_mdm,diag_qsc,serial_hsic,serial_hsuart,rmnet_hsic,rmnet_hsuart,mass_storage,adb
-              ;;
-              "dsda2")
-                   setprop persist.sys.usb.config diag,diag_mdm,diag_mdm2,serial_hsic,serial_hsusb,rmnet_hsic,rmnet_hsusb,mass_storage,adb
-              ;;
-              *)
-		case "$target" in
-			"msm8916")
-				setprop persist.sys.usb.config diag,serial_smd,rmnet_bam,adb
-			;;
-			*)
-				setprop persist.sys.usb.config diag,serial_smd,serial_tty,rmnet_bam,mass_storage,adb
-			;;
-		esac
-              ;;
-          esac
-          ;;
+    "" | "diag,mass_storage,adb" | "none") #USB persist config not set, select default configuration
+      case "$build_type" in
+          "eng")
+             setprop persist.sys.usb.config nubia,adb
+           ;;
+          *) 	
+            setprop persist.sys.usb.config nubia
+           ;;
       esac
-    ;;
-    * ) ;; #USB persist config exists, do nothing
-esac
+     ;;
+	  * ) ;; #USB persist config exists, do nothing
+esac	 		
+#
+# Add support for exposing lun0 as cdrom in mass-storage
+#
+target=`getprop ro.product.device`
+cdromname="/system/driver.iso"
+echo $cdromname > /sys/class/android_usb/android0/f_mass_storage/rom/file
 
 #
 # Do target specific things
@@ -199,22 +205,6 @@ case "$baseband" in
     ;;
 esac
 
-#
-# Add support for exposing lun0 as cdrom in mass-storage
-#
-cdromname="/system/etc/cdrom_install.iso"
-platformver=`cat /sys/devices/soc0/hw_platform`
-case "$target" in
-	"msm8226" | "msm8610" | "msm8916")
-		case $platformver in
-			"QRD")
-				echo "mounting usbcdrom lun"
-				echo $cdromname > /sys/class/android_usb/android0/f_mass_storage/rom/file
-				chmod 0444 /sys/class/android_usb/android0/f_mass_storage/rom/file
-				;;
-		esac
-		;;
-esac
 
 #
 # Add changes to support diag with rndis

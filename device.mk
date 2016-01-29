@@ -20,45 +20,9 @@ LOCAL_PATH := device/zte/n918st
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# media_profiles and media_codecs xmls for 8916
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml \
-    $(LOCAL_PATH)/media/media_codecs.xml:system/etc/media_codecs.xml
-
-# Audio configuration file
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/etc/audio_policy.conf:system/etc/audio_policy.conf \
-    $(LOCAL_PATH)/etc/mixer_paths_mtp.xml:system/etc/mixer_paths_mtp.xml \
-    $(LOCAL_PATH)/etc/mixer_paths_qrd_skuh.xml:system/etc/mixer_paths_qrd_skuh.xml \
-    $(LOCAL_PATH)/etc/mixer_paths_qrd_skui.xml:system/etc/mixer_paths_qrd_skui.xml \
-    $(LOCAL_PATH)/etc/mixer_paths_qrd_skuhf.xml:system/etc/mixer_paths_qrd_skuhf.xml \
-    $(LOCAL_PATH)/etc/mixer_paths.xml:system/etc/mixer_paths.xml
-
-# DPM
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/etc/dpm/fdMgr/fd.conf:system/etc/dpm/fdMgr/fd.conf
-
 # gps/location secuity configuration file
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/etc/sec_config:system/etc/sec_config
-
-# Listen configuration file
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/listen_platform_info.xml:system/etc/listen_platform_info.xml \
-    $(LOCAL_PATH)/etc/whitelist_appops.xml:system/etc/whitelist_appops.xml
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/etc/capability.xml:system/etc/capability.xml \
-    $(LOCAL_PATH)/etc/qlog-conf.xml:system/etc/qlog-conf.xml \
-    $(LOCAL_PATH)/etc/wfdconfig.xml:system/etc/wfdconfig.xml \
-    $(LOCAL_PATH)/etc/wfdconfigsink.xml:system/etc/wfdconfigsink.xml
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
-    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
-    $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini \
-    $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
 # Logmask
 PRODUCT_COPY_FILES += \
@@ -178,10 +142,6 @@ PRODUCT_PACKAGES += \
     FMRecord \
     qcom.fmradio
 
-#fstab.qcom
-PRODUCT_PACKAGES += \
-    fstab.qcom
-
 # QRNGD
 PRODUCT_PACKAGES += \
     qrngd \
@@ -239,44 +199,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/etc/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/etc/hcidump.sh:system/etc/hcidump.sh \
-    $(LOCAL_PATH)/etc/hsic.control.bt.sh:system/etc/hsic.control.bt.sh \
-    $(LOCAL_PATH)/etc/init.ath3k.bt.sh:system/etc/init.ath3k.bt.sh \
-    $(LOCAL_PATH)/etc/init.crda.sh:system/etc/init.crda.sh \
     $(LOCAL_PATH)/etc/gps.conf:system/etc/gps.conf \
     $(LOCAL_PATH)/etc/flp.conf:system/etc/flp.conf \
     $(LOCAL_PATH)/etc/izat.conf:system/etc/izat.conf \
     $(LOCAL_PATH)/etc/lowi.conf:system/etc/lowi.conf \
-    $(LOCAL_PATH)/etc/vold.fstab:system/etc/vold.fstab \
-    $(LOCAL_PATH)/etc/init.qcom.audio.sh:system/etc/init.qcom.audio.sh \
-    $(LOCAL_PATH)/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
-    $(LOCAL_PATH)/etc/init.qcom.coex.sh:system/etc/init.qcom.coex.sh \
-    $(LOCAL_PATH)/etc/init.qcom.efs.sync.sh:system/etc/init.qcom.efs.sync.sh \
-    $(LOCAL_PATH)/etc/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
-    $(LOCAL_PATH)/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
-    $(LOCAL_PATH)/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
-    $(LOCAL_PATH)/etc/init.qcom.sdio.sh:system/etc/init.qcom.sdio.sh \
-    $(LOCAL_PATH)/etc/qcom.cfg:system/etc/qcom.cfg \
-    $(LOCAL_PATH)/etc/xtra_root_cert.pem:system/etc/xtra_root_cert.pem \
-    $(LOCAL_PATH)/etc/init.qcom.uicc.sh:system/etc/init.qcom.uicc.sh \
-    $(LOCAL_PATH)/etc/init.qcom.wifi.sh:system/etc/init.qcom.wifi.sh
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/ramdisk/fstab.qcom:root/fstab.qcom \
-    $(LOCAL_PATH)/ramdisk/init.class_main.sh:root/init.class_main.sh \
-    $(LOCAL_PATH)/ramdisk/init.mdm.sh:root/init.mdm.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.class_core.sh:root/init.qcom.class_core.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.factory.sh:root/init.qcom.factory.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.rc:root/init.qcom.rc \
-    $(LOCAL_PATH)/ramdisk/init.qcom.sh:root/init.qcom.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.ssr.sh:root/init.qcom.ssr.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.syspart_fixup.sh:root/init.qcom.syspart_fixup.sh \
-    $(LOCAL_PATH)/ramdisk/init.qcom.usb.rc:root/init.qcom.usb.rc \
-    $(LOCAL_PATH)/ramdisk/init.qcom.usb.sh:root/init.qcom.usb.sh \
-    $(LOCAL_PATH)/ramdisk/init.target.rc:root/init.target.rc \
-    $(LOCAL_PATH)/ramdisk/ueventd.qcom.rc:root/ueventd.qcom.rc \
-    $(LOCAL_PATH)/ramdisk/ueventd.rc:root/ueventd.rc
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -285,6 +211,25 @@ PRODUCT_PACKAGES += \
     VisualizationWallpapers \
     libdashplayer \
     librs_jni
+
+PRODUCT_PACKAGES += \
+    fstab.qcom \
+    init.class_main.sh \
+    init.mdm.sh \
+    init.nubia.sh \
+    init.nubia.usb.rc \
+    init.qcom.class_core.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.factory.sh \
+    init.qcom.rc \
+    init.qcom.sh \
+    init.qcom.ssr.sh \
+    init.qcom.syspart_fixup.sh \
+    init.qcom.usb.rc \
+    init.qcom.usb.sh \
+    init.target.rc \
+    ueventd.qcom.rc \
+    ueventd.rc
 
 # USB
 PRODUCT_PACKAGES += \

@@ -27,6 +27,9 @@
 #
 #
 
+import init.project.rc
+import init.rom.rc
+
 on early-init
     mkdir /firmware 0771 system system
     mkdir /system 0777 root root
@@ -76,11 +79,6 @@ on property:persist.usb.chgdisabled=1
 on property:persist.usb.chgdisabled=0
     write /sys/class/power_supply/battery/charging_enabled 1
 
-
-#enable zram
-on property:ro.config.zram=true
-   swapon_all fstab.qcom
-
 service qrngd /system/bin/qrngd -f
    class main
    user root
@@ -101,7 +99,7 @@ service qseecomd /system/bin/qseecomd
    user root
    group root
 
-service mpdecision /system/bin/mpdecision --avg_comp
+service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
    user root
    disabled
 
@@ -134,16 +132,12 @@ on boot
 
 service ppd /system/bin/mm-pp-daemon
     class late_start
-    disabled
     user system
     socket pps stream 0660 system system
     group system graphics
 
 on property:init.svc.surfaceflinger=stopped
     stop ppd
-
-on property:init.svc.surfaceflinger=running
-    start ppd
 
 service wcnss-service /system/bin/wcnss_service
     class late_start
