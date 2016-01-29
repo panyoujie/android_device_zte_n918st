@@ -126,6 +126,9 @@ TARGET_POWERHAL_VARIANT := qcom
 #charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
+# recovery
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.qcom
+
 # Qualcomm Hardware
 BOARD_USES_QCOM_HARDWARE := true
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
