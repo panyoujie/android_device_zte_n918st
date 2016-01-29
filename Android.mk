@@ -15,7 +15,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),Kraft_T)
+ifeq ($(TARGET_DEVICE),n918st)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 endif

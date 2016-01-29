@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VENDOR=lenovo
-DEVICE=Kraft_T
+VENDOR=zte
+DEVICE=n918st
 
 OUTDIR=vendor/$VENDOR/$DEVICE
 MAKEFILE=../../../$OUTDIR/$DEVICE-vendor-blobs.mk
@@ -117,7 +117,7 @@ EOF
 
 LOCAL_PATH := \$(call my-dir)
 
-ifneq (\$(filter Kraft_T,\$(TARGET_DEVICE)),)
+ifneq (\$(filter n918st,\$(TARGET_DEVICE)),)
 
 include \$(CLEAR_VARS)
 LOCAL_MODULE := com.qualcomm.location

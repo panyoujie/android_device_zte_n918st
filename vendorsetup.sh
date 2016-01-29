@@ -1,3 +1,3 @@
 
-add_lunch_combo cm_Kraft_T-userdebug
-add_lunch_combo cm_Kraft_T-eng
+add_lunch_combo cm_n918st-userdebug
+add_lunch_combo cm_n918st-eng

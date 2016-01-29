@@ -18,18 +18,18 @@
 $(call inherit-product, vendor/cm/config/cdma.mk)
 
 # Release name
-PRODUCT_RELEASE_NAME := Kraft_T
+PRODUCT_RELEASE_NAME := n918st
 
 # Inherit some common Mokee stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 
 # Inherit device configuration
-$(call inherit-product, device/lenovo/Kraft_T/full_Kraft_T.mk)
+$(call inherit-product, device/zte/n918st/full_n918st.mk)
 
 # Torch
 PRODUCT_PACKAGES += \
     Torch
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := Kraft_T
-PRODUCT_NAME := cm_Kraft_T
+PRODUCT_DEVICE := n918st
+PRODUCT_NAME := cm_n918st

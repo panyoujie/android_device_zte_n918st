@@ -16,23 +16,23 @@
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-LOCAL_PATH := device/lenovo/Kraft_T
+LOCAL_PATH := device/zte/n918st
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # media_profiles and media_codecs xmls for 8916
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/media/media_profiles.xml:system/etc/media_profiles.xml \
-    device/lenovo/Kraft_T/media/media_codecs.xml:system/etc/media_codecs.xml
+    $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml \
+    $(LOCAL_PATH)/media/media_codecs.xml:system/etc/media_codecs.xml
 
 # Audio configuration file
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/etc/audio_policy.conf:system/etc/audio_policy.conf \
-    device/lenovo/Kraft_T/etc/mixer_paths_mtp.xml:system/etc/mixer_paths_mtp.xml \
-    device/lenovo/Kraft_T/etc/mixer_paths_qrd_skuh.xml:system/etc/mixer_paths_qrd_skuh.xml \
-    device/lenovo/Kraft_T/etc/mixer_paths_qrd_skui.xml:system/etc/mixer_paths_qrd_skui.xml \
-    device/lenovo/Kraft_T/etc/mixer_paths_qrd_skuhf.xml:system/etc/mixer_paths_qrd_skuhf.xml \
-    device/lenovo/Kraft_T/etc/mixer_paths.xml:system/etc/mixer_paths.xml
+    $(LOCAL_PATH)/etc/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/etc/mixer_paths_mtp.xml:system/etc/mixer_paths_mtp.xml \
+    $(LOCAL_PATH)/etc/mixer_paths_qrd_skuh.xml:system/etc/mixer_paths_qrd_skuh.xml \
+    $(LOCAL_PATH)/etc/mixer_paths_qrd_skui.xml:system/etc/mixer_paths_qrd_skui.xml \
+    $(LOCAL_PATH)/etc/mixer_paths_qrd_skuhf.xml:system/etc/mixer_paths_qrd_skuhf.xml \
+    $(LOCAL_PATH)/etc/mixer_paths.xml:system/etc/mixer_paths.xml
 
 # DPM
 PRODUCT_COPY_FILES += \
@@ -40,33 +40,31 @@ PRODUCT_COPY_FILES += \
 
 # gps/location secuity configuration file
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/etc/sec_config:system/etc/sec_config
+    $(LOCAL_PATH)/etc/sec_config:system/etc/sec_config
 
 # Listen configuration file
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/listen_platform_info.xml:system/etc/listen_platform_info.xml
+    $(LOCAL_PATH)/listen_platform_info.xml:system/etc/listen_platform_info.xml \
+    $(LOCAL_PATH)/etc/whitelist_appops.xml:system/etc/whitelist_appops.xml
 
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/etc/capability.xml:system/etc/capability.xml \
-    device/lenovo/Kraft_T/etc/qlog-conf.xml:system/etc/qlog-conf.xml \
-    device/lenovo/Kraft_T/etc/wfdconfig.xml:system/etc/wfdconfig.xml \
-    device/lenovo/Kraft_T/etc/wfdconfigsink.xml:system/etc/wfdconfigsink.xml
+    $(LOCAL_PATH)/etc/capability.xml:system/etc/capability.xml \
+    $(LOCAL_PATH)/etc/qlog-conf.xml:system/etc/qlog-conf.xml \
+    $(LOCAL_PATH)/etc/wfdconfig.xml:system/etc/wfdconfig.xml \
+    $(LOCAL_PATH)/etc/wfdconfigsink.xml:system/etc/wfdconfigsink.xml
 
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/etc/whitelist_appops.xml:system/etc/whitelist_appops.xml
-
-PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
-    device/lenovo/Kraft_T/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    device/lenovo/Kraft_T/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
-    device/lenovo/Kraft_T/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini \
-    device/lenovo/Kraft_T/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
+    $(LOCAL_PATH)/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
+    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
+    $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini \
+    $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
 # Logmask
 PRODUCT_COPY_FILES += \
-    device/lenovo/Kraft_T/etc/logmask/default_diag_mask.cfg:system/etc/logmask/default_diag_mask.cfg \
-    device/lenovo/Kraft_T/etc/logmask/dynamic_debug_mask.cfg:system/etc/logmask/dynamic_debug_mask.cfg \
-    device/lenovo/Kraft_T/etc/logmask/qdss.cfg:system/etc/logmask/qdss.cfg
+    $(LOCAL_PATH)/etc/logmask/default_diag_mask.cfg:system/etc/logmask/default_diag_mask.cfg \
+    $(LOCAL_PATH)/etc/logmask/dynamic_debug_mask.cfg:system/etc/logmask/dynamic_debug_mask.cfg \
+    $(LOCAL_PATH)/etc/logmask/qdss.cfg:system/etc/logmask/qdss.cfg
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \
@@ -178,7 +176,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     FM2 \
     FMRecord \
-    libflourmo_jni \
     qcom.fmradio
 
 #fstab.qcom
@@ -309,38 +306,18 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapgrowthlimit=128m
 
-#Set default profile to FUT
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.logkit.ctrlcode=1
-
 # System Properties
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
-
-# appops configuration
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.strict_op_enable=false
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=60
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.whitelist=/system/etc/whitelist_appops.xml
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.extension_library=/vendor/lib/libqc-opt.so \
-    persist.radio.apm_sim_not_pwdn=1
-
-PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=320
-
-# Recovery
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.cwm.forbid_format=/fsg,/firmware,/persist,/boot
 
 $(call inherit-product, build/target/product/full.mk)
 
 $(call inherit-product, frameworks/native/build/phone-hdpi-2048-dalvik-heap.mk)
 
-$(call inherit-product-if-exists, vendor/lenovo/Kraft_T/Kraft_T-vendor.mk)
+#$(call inherit-product-if-exists, vendor/zte/n918st/n918st-vendor.mk)

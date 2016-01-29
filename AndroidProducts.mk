@@ -15,4 +15,4 @@
 
 
 PRODUCT_MAKEFILES := \
-	$(LOCAL_DIR)/full_Kraft_T.mk
+	$(LOCAL_DIR)/full_n918st.mk

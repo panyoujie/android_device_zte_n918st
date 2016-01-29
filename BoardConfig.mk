@@ -18,13 +18,11 @@
 #
 # Product-specific compile-time definitions.
 #
-LOCAL_PATH := device/lenovo/Kraft_T
+LOCAL_PATH := device/zte/n918st
 
--include vendor/lenovo/Kraft_T/BoardConfigVendor.mk
+-include vendor/zte/n918st/BoardConfigVendor.mk
 
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
-
-TARGET_OTA_ASSERT_DEVICE := Kraft-T,K30T,K30-T,A6000,Kraft-W,Kraft-C,k30t
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_lKERNEL := false
@@ -74,7 +72,7 @@ TARGET_INIT_VENDOR_LIB := libinit_msm
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
 
 # Graphics
-TARGET_QCOM_DISPLAY_VARIANT := caf-k30t
+TARGET_QCOM_DISPLAY_VARIANT := caf-new
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_HAVE_HDMI_OUT := false
@@ -101,12 +99,12 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
 BOARD_KERNEL_SEPARATED_DT := true
-TARGET_KERNEL_CONFIG := cyanogenmod_K30T_defconfig
-TARGET_KERNEL_SOURCE := kernel/lenovo/msm8916
+TARGET_KERNEL_CONFIG := cyanogenmod_n918st_defconfig
+TARGET_KERNEL_SOURCE := kernel/zte/msm8916
 
 # Media
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
-TARGET_QCOM_MEDIA_VARIANT := caf-k30t
+TARGET_QCOM_MEDIA_VARIANT := caf-new
 TARGET_HAVE_OMX_HEVC := true
 
 # Partitions
@@ -136,15 +134,7 @@ COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
 TARGET_USES_QCOM_BSP := true
 HAVE_SYNAPTICS_I2C_RMI4_FW_UPGRADE := true
 
-# Recovery
-RECOVERY_USE_VIRTUAL_KEY := true
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
-BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/recovery.fstab
-TARGET_RECOVERY_INITRC := $(LOCAL_PATH)/recovery/init.rc
-BOARD_RECOVERY_SWIPE := true
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-DEVICE_RESOLUTION := 720x1280
 
 # Vold
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
@@ -152,53 +142,6 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/
 # RIL
 COMMON_GLOBAL_CFLAGS += -DRIL_SUPPORTS_SEEK
 PROTOBUF_SUPPORTED := true
-
-# SELinux
-BOARD_SEPOLICY_DIRS += \
-    $(LOCAL_PATH)/sepolicy
-
-BOARD_SEPOLICY_UNION += \
-    adbd.te \
-    app.te \
-    bluetooth_loader.te \
-    bridge.te \
-    camera.te \
-    device.te \
-    dhcp.te \
-    dnsmasq.te \
-    domain.te \
-    drmserver.te \
-    file_contexts \
-    file.te \
-    hostapd.te \
-    init_shell.te \
-    init.te \
-    libqc-opt.te \
-    mediaserver.te \
-    mpdecision.te \
-    netd.te \
-    netmgrd.te \
-    nfc.te \
-    property_contexts \
-    property.te \
-    qcom.te \
-    qmux.te \
-    radio.te \
-    rild.te \
-    rmt.te \
-    sdcard_internal.te \
-    sdcardd.te \
-    sensors.te \
-    shell.te \
-    surfaceflinger.te \
-    system.te \
-    tee.te \
-    te_macros \
-    thermald.te \
-    ueventd.te \
-    vold.te \
-    wpa_supplicant.te \
-    zygote.te
 
 # Wifi
 BOARD_HAS_QCOM_WLAN := true

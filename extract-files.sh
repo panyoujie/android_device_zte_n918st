@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VENDOR=lenovo
-DEVICE=Kraft_T
+VENDOR=zte
+DEVICE=n918st
 
 function extract() {
     for FILE in `egrep -v '(^#|^$)' $1`; do
