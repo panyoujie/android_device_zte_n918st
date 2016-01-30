@@ -95,11 +95,6 @@ PRODUCT_PACKAGES += \
     libqcomvoiceprocessing \
     tinymix
 
-# Camera
-PRODUCT_PACKAGES += \
-    camera.msm8916 \
-    libmm-qcamera
-
 # Display
 PRODUCT_PACKAGES += \
     copybit.msm8916 \
